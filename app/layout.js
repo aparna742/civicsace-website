@@ -1,4 +1,5 @@
 import { Inter, Outfit } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -28,6 +29,10 @@ export const metadata = {
 
 const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
+const GOOGLE_TAG_ID = 'AW-18441718124';
+
+const GOOGLE_TAG_INIT_SCRIPT = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GOOGLE_TAG_ID}');`;
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
@@ -38,6 +43,13 @@ export default function RootLayout({ children }) {
         <Header />
         <main className="mt-[72px] flex flex-1 flex-col">{children}</main>
         <Footer />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-tag" strategy="afterInteractive">
+          {GOOGLE_TAG_INIT_SCRIPT}
+        </Script>
       </body>
     </html>
   );
